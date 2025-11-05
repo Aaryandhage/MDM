@@ -1,0 +1,103 @@
+
+!pip install shodan
+
+import shodan
+
+# Input your Shodan API key
+SHODAN_API_KEY = "di2s42WwXqcLBdnkmMjrFKQKjWrf0iJq"  # Replace with your key
+api = shodan.Shodan(SHODAN_API_KEY)
+
+
+try:
+    query = 'apache country:US'
+    results = api.search(query)
+
+    print(f"Results found: {results['total']}\n")
+    for match in results['matches'][:5]:  # Only show first 5 for brevity
+        print(f"IP: {match['ip_str']}")
+        print(f"Port: {match['port']}")
+        print(f"Org: {match.get('org', 'n/a')}")
+        print(f"Data: {match['data'][:100]}...\n")
+
+except shodan.APIError as e:
+    print(f"Error: {e}")
+
+
+
+
+
+
+query = 'product:"OpenSSH" port:22'
+results = api.search(query)
+
+for match in results['matches'][:3]:
+    print(f"IP: {match['ip_str']} ({match.get('org', 'n/a')})")
+    vulns = match.get('vulns', [])
+    if vulns:
+        print("Vulnerabilities:")
+        for vuln in vulns:
+            print(f" - {vuln}")
+    else:
+        print("No vulnerability data available")
+    print("---")
+
+
+
+
+    ip_address = "8.8.8.8"  # Example target (Google DNS)
+host_info = api.host(ip_address)
+
+print(f"IP: {host_info['ip_str']}")
+print(f"Organization: {host_info.get('org', 'n/a')}")
+print(f"Operating System: {host_info.get('os', 'n/a')}")
+print("Open Ports:", host_info['ports'])
+
+
+
+
+import shodan
+
+SHODAN_API_KEY = "di2s42WwXqcLBdnkmMjrFKQKjWrf0iJq"  # Replace with your own key
+api = shodan.Shodan(SHODAN_API_KEY)
+
+# Search for information about unipune.ac.in
+try:
+    results = api.search("hostname:unipune.ac.in")
+    print(f"Results found: {results['total']}")
+
+    for match in results['matches']:
+        print(f"IP: {match['ip_str']}")
+        print(f"Port: {match['port']}")
+        print(f"Data: {match['data'][:100]}...\n")
+
+except shodan.APIError as e:
+    print("Error:", e)
+
+
+
+
+
+
+
+    import shodan
+
+# Your Shodan API Key
+SHODAN_API_KEY = "di2s42WwXqcLBdnkmMjrFKQKjWrf0iJq"  # Replace with your key
+api = shodan.Shodan(SHODAN_API_KEY)
+
+try:
+    # Search query for Apache servers in Pune, India
+    query = 'apache country:IN city:Pune'
+    results = api.search(query)
+
+    print(f"Total results found: {results['total']}\n")
+
+    # Show details of first 5 results
+    for match in results['matches'][:5]:
+        print(f"IP Address : {match['ip_str']}")
+        print(f"Port       : {match['port']}")
+        print(f"Org/ISP    : {match.get('org', 'n/a')}")
+        print(f"Banner     : {match['data'][:100]}...\n")
+
+except shodan.APIError as e:
+    print(f"Error: {e}")
